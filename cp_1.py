@@ -25,25 +25,52 @@ destinations = {
 # Streamlit page setup
 st.title("Travel Advisor")
 
-# Search form or dropdown for destination selection
-st.sidebar.header("Choose Your Destination")
-destination = st.sidebar.selectbox("Select a destination:", list(destinations.keys()))
+# Sidebar quiz or destination selection
+st.sidebar.header("Choose Your Adventure")
 
-# Display destination details
-st.header(f"Travel to {destination}")
+quiz_option = st.sidebar.radio("Would you like to take a quiz or select a destination?", ('Take a Quiz', 'Select Destination'))
 
-if destination:
-    info = destinations[destination]
-    st.subheader(f"{destination}, {info['country']}")
-    
-    st.markdown(f"**Top Attractions:**")
-    st.write(", ".join(info['top_attractions']))
+if quiz_option == 'Take a Quiz':
+    st.header("Find Your Ideal Destination")
 
-    st.markdown(f"**Travel Tips:**")
-    st.write(info['travel_tips'])
+    # Quiz questions
+    q1 = st.radio("What kind of weather do you prefer?", ("Mild", "Hot", "Cold"))
+    q2 = st.radio("What activities do you enjoy?", ("City landmarks", "Nature and outdoor activities", "Cultural experiences"))
+    q3 = st.radio("What's your travel budget?", ("Budget", "Mid-range", "Luxury"))
 
-    st.markdown(f"**Weather Information:**")
-    st.write(info['weather'])
+    if st.button("Get Recommendation"):
+        if q1 == "Mild" and q2 == "City landmarks" and q3 == "Mid-range":
+            st.success("We recommend visiting **Paris, France**!")
+            st.image("https://upload.wikimedia.org/wikipedia/commons/e/e6/Paris_Night.jpg", use_column_width=True)
+        elif q1 == "Hot" and q2 == "Cultural experiences" and q3 == "Budget":
+            st.success("We recommend visiting **Tokyo, Japan**!")
+            st.image("https://upload.wikimedia.org/wikipedia/commons/7/74/Tokyo_Tower_and_Zojo-ji_Temple.jpg", use_column_width=True)
+        elif q1 == "Cold" and q2 == "City landmarks" and q3 == "Luxury":
+            st.success("We recommend visiting **New York, USA**!")
+            st.image("https://upload.wikimedia.org/wikipedia/commons/a/a1/Statue_of_Liberty_7.jpg", use_column_width=True)
+        else:
+            st.warning("We're still figuring out your perfect match! Try adjusting your answers or explore a new destination.")
+
+else:
+    # Destination selection
+    st.sidebar.header("Select a Destination")
+    destination = st.sidebar.selectbox("Choose a destination:", list(destinations.keys()))
+
+    # Display destination details
+    st.header(f"Travel to {destination}")
+
+    if destination:
+        info = destinations[destination]
+        st.subheader(f"{destination}, {info['country']}")
+        
+        st.markdown(f"**Top Attractions:**")
+        st.write(", ".join(info['top_attractions']))
+
+        st.markdown(f"**Travel Tips:**")
+        st.write(info['travel_tips'])
+
+        st.markdown(f"**Weather Information:**")
+        st.write(info['weather'])
 
 # Travel advice section
 st.sidebar.header("General Travel Advice")
